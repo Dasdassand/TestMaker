@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="244.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.testmaker.controller.AdminController">
+   <children>
+      <TextField fx:id="CountQuest" layoutX="14.0" layoutY="47.0" />
+      <Button fx:id="CreateButton" layoutX="14.0" layoutY="155.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="160.0" text="Создать тест" />
+      <TextField fx:id="AnswerCount" layoutX="14.0" layoutY="83.0" />
+      <Label layoutX="187.0" layoutY="88.0" text="Количество вариантов ответа" />
+      <Label layoutX="187.0" layoutY="52.0" text="Общее количество вопросов в тесте" />
+      <ComboBox fx:id="SubjectBox" layoutX="8.0" layoutY="8.0" prefHeight="26.0" prefWidth="357.0" />
+      <Label layoutX="380.0" layoutY="13.0" text="Взвод и дисицплина" />
+      <TextField fx:id="TimeCount" layoutX="14.0" layoutY="117.0" />
+      <Label layoutX="187.0" layoutY="122.0" text="Время на выполнение всего теста (минут)" />
+      <Button fx:id="EnterTest" layoutX="220.0" layoutY="155.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="160.0" text="Открыть тест" />
+      <Button fx:id="CheckTest" layoutX="14.0" layoutY="201.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="160.0" text="Проверить тест" />
+      <Button fx:id="OpenTest" layoutX="220.0" layoutY="201.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="160.0" text="Предоставить тест" />
+   </children>
+</AnchorPane>

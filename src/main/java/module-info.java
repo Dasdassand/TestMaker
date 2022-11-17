@@ -1,7 +1,8 @@
 module com.example.testmaker {
     requires javafx.controls;
     requires javafx.fxml;
-    requires lombok;
+    requires static lombok;
+    requires java.desktop;
 
 
     opens com.example.testmaker to javafx.fxml;
