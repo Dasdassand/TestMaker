@@ -10,6 +10,7 @@ import java.util.List;
 
 
 public class TemporaryMemory {
+    public static String path;
     public static String filename = "test";
     public static Integer countQuest;
     public static List<Platoon> platoons = new ArrayList<>();

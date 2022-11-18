@@ -1,5 +1,6 @@
 package com.example.testmaker.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -34,6 +35,13 @@ public class NameFileController {
                 OtherController.generateAlert("Введите данные", Alert.AlertType.WARNING);
             else {
                 TemporaryMemory.filename = NewName.getText();
+                try {
+                    if (OtherController.read(TemporaryMemory.path)){
+                        System.out.println("Done");
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 Stage stage = (Stage) Save.getScene().getWindow();
                 stage.close();
             }

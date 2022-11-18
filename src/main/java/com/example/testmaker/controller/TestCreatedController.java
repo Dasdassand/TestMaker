@@ -84,6 +84,8 @@ public class TestCreatedController {
                 OtherController.generateAlert("Введены не все значения", Alert.AlertType.WARNING);
             else if (!(One.isSelected() || Two.isSelected() || Three.isSelected() || Four.isSelected()))
                 OtherController.generateAlert("Не выбран не один вариант ответа", Alert.AlertType.WARNING);
+            else if (One.isSelected() && Two.isSelected() && Three.isSelected() && Four.isSelected())
+                OtherController.generateAlert("Вы пометили все варианты ответа, как верыне", Alert.AlertType.WARNING);
             else {
                 TemporaryMemory.countQuest--;
                 TemporaryMemory.test.getQuests().add(new Quest(count, Quest.getText(),
@@ -105,8 +107,8 @@ public class TestCreatedController {
                 System.out.println(dir.get().getAbsolutePath());
 
                 try {
-
-                    OtherController.read(dir.get().getAbsolutePath());
+                    TemporaryMemory.path = dir.get().getAbsolutePath();
+                    OtherController.read(TemporaryMemory.path);
 
                 } catch (IOException e) {
 

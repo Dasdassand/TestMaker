@@ -40,20 +40,30 @@ public class OtherController {
         stage.close();
     }
 
-    public static void read(String path) throws IOException {
+    public static boolean read(String path) throws IOException {
         File file = new File(path, TemporaryMemory.filename + ".txt");
-        boolean flag = true;
-        while (flag) {
-            if (!file.createNewFile()) {
-                generateAlert("Файл с таким именем существует - невозможно создать новый", Alert.AlertType.ERROR);
-                openWindow("Создание нвого имени", "NameFileForm.fxml", "title.png", new Button());
-            } else {
-                FileWriter fileWriter = new FileWriter(file);
-                fileWriter.write(generateText());
-                fileWriter.flush();
-                flag = false;
-            }
-        }
+           if (!file.createNewFile()) {
+               generateAlert("Файл с таким именем существует - невозможно создать новый", Alert.AlertType.ERROR);
+               generateNameEditForm();
+               return false;
+           } else {
+               FileWriter fileWriter = new FileWriter(file);
+               fileWriter.write(generateText());
+               fileWriter.flush();
+               return true;
+           }
+
+    }
+
+    private static void generateNameEditForm() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(Objects.requireNonNull(HelloApplication.class.getResource("NameFileForm.fxml")));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.setTitle("Создание нового имени");
+        stage.getIcons().add(new Image(Objects.requireNonNull(HelloApplication.class.getResourceAsStream("title.png"))));
+        stage.setScene(scene);
+        stage.show();
     }
 
     public static String generateText() {
