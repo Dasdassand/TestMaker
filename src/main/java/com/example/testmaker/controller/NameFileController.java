@@ -34,10 +34,9 @@ public class NameFileController {
             if (NewName.getText().equals(""))
                 OtherController.generateAlert("Введите данные", Alert.AlertType.WARNING);
             else {
-                TemporaryMemory.filename = NewName.getText();
-                TemporaryMemory.renameAnswerName();
+                TemporaryMemory.fileName = NewName.getText();
                 try {
-                    if (OtherController.readQuest()){
+                    if (OtherController.readQuest(TemporaryMemory.fileName)){
                         System.out.println("Done");
                     }
                 } catch (IOException e) {

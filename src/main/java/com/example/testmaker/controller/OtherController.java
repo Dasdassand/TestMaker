@@ -41,29 +41,35 @@ public class OtherController {
         stage.close();
     }
 
-    public static boolean readQuest() throws IOException {
-        File file = new File(TemporaryMemory.path, TemporaryMemory.filename + ".txt");
-        if (!file.createNewFile()) {
+    public static boolean readQuest(String filename) throws IOException {
+        if (!Objects.equals(filename, "")) {
+            File file = new File(TemporaryMemory.path, filename + ".txt");
+            if (!file.createNewFile()) {
+                generateAlert("Файл с таким именем существует - невозможно создать новый", Alert.AlertType.ERROR);
+                generateNameEditForm();
+                return false;
+            } else {
+                FileWriter fileWriter = new FileWriter(file);
+                fileWriter.write(generateTextQuest());
+                fileWriter.flush();
+                readAnswer(filename + "Answer");
+                fileWriter.close();
+                return true;
+            }
+        }else {
             generateAlert("Файл с таким именем существует - невозможно создать новый", Alert.AlertType.ERROR);
             generateNameEditForm();
-            return false;
-        } else {
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(generateTextQuest());
-            fileWriter.flush();
-            readAnswer();
-            fileWriter.close();
             return true;
         }
 
     }
 
-    private static void readAnswer() throws IOException {
-        File file = new File(TemporaryMemory.path, TemporaryMemory.answerFilename + ".txt");
+    private static void readAnswer(String answerFilename) throws IOException {
+        File file = new File(TemporaryMemory.path, answerFilename + ".txt");
         file.createNewFile();
         try {
             FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(generateTextAnswer());
+           // fileWriter.write(generateTextAnswer());
             fileWriter.flush();
             fileWriter.close();
         }catch (IOException e){
@@ -72,7 +78,7 @@ public class OtherController {
 
     }
 
-    private static void generateNameEditForm() throws IOException {
+    public static void generateNameEditForm() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(Objects.requireNonNull(HelloApplication.class.getResource("NameFileForm.fxml")));
         Scene scene = new Scene(fxmlLoader.load());
@@ -86,9 +92,9 @@ public class OtherController {
     public static String generateTextQuest() {
         return TemporaryMemory.test.toString();
     }
-    public static String generateTextAnswer(){
-        return TemporaryMemory.test.answerToString();
-    }
+   // public static String generateTextAnswer(){
+        //return TemporaryMemory.test.answerToString();
+  //  }
     public static File readFile(){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Enter file");

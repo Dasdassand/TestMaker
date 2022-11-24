@@ -99,10 +99,10 @@ public class TestCreatedController {
                 configuringDirectoryChooser(directoryChooser);
                 dir.set(directoryChooser.showDialog(new Stage()));
                 System.out.println(dir.get().getAbsolutePath());
-
+                //  OtherController.generateTextAnswer();
                 try {
                     TemporaryMemory.path = dir.get().getAbsolutePath();
-                    OtherController.readQuest();
+                    OtherController.readQuest(TemporaryMemory.fileName);
 
                 } catch (IOException e) {
 

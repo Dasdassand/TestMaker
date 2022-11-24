@@ -14,11 +14,6 @@ import java.sql.SQLException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException, SQLException, ClassNotFoundException {
-        DataBaseAPI baseAPI = DataBaseAPI.getDataBase();
-        ResultSet resultSet = baseAPI.getResultSet("Select id From student");
-        while (resultSet.next())
-            System.out.println(resultSet.getString(1));
-
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("AuthForm.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Аунтефекация");
