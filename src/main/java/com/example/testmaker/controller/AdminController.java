@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class AdminController {
 
@@ -19,9 +20,6 @@ public class AdminController {
 
     @FXML
     private URL location;
-
-    @FXML
-    private TextField AnswerCount;
 
     @FXML
     private Button CheckTest;
@@ -46,7 +44,6 @@ public class AdminController {
 
     @FXML
     void initialize() {
-        assert AnswerCount != null : "fx:id=\"AnswerCount\" was not injected: check your FXML file 'Untitled'.";
         assert CheckTest != null : "fx:id=\"CheckTest\" was not injected: check your FXML file 'Untitled'.";
         assert CountQuest != null : "fx:id=\"CountQuest\" was not injected: check your FXML file 'Untitled'.";
         assert CreateButton != null : "fx:id=\"CreateButton\" was not injected: check your FXML file 'Untitled'.";
@@ -66,15 +63,13 @@ public class AdminController {
         SubjectBox.getSelectionModel().selectFirst();
             CountQuest.setText("");
             TimeCount.setText("");
-            AnswerCount.setText("");
             CreateButton.setOnAction(actionEvent -> {
                 if (SubjectBox.getValue().equals("Не выбран"))
                     OtherController.generateAlert("Взвод не выбран", Alert.AlertType.WARNING);
-                else if (CountQuest.getText().equals("") || TimeCount.getText().equals("") || AnswerCount.getText().equals(""))
+                else if (CountQuest.getText().equals("") || TimeCount.getText().equals(""))
                     OtherController.generateAlert("Введены не все значения", Alert.AlertType.WARNING);
                 else {
                     TemporaryMemory.test.setCountQuest(Integer.parseInt(CountQuest.getText()));
-                    TemporaryMemory.test.setCountAnswer(Integer.parseInt(AnswerCount.getText()));
                     TemporaryMemory.test.setTime(Integer.parseInt(TimeCount.getText()));
                     TemporaryMemory.test.setDateCreated(LocalDateTime.now());
                     TemporaryMemory.test.setSubjectName(subjectName(SubjectBox.getValue()));
@@ -83,8 +78,17 @@ public class AdminController {
                 }
 
             });
+            EnterTest.setOnAction(actionEvent -> {
+                OtherController.openWindow("Просмотр теста", "See.fxml", "title.png", EnterTest);
+                Stage stage = (Stage) EnterTest.getScene().getWindow();
+                stage.close();
+            });
 
-
+        CheckTest.setOnAction(actionEvent -> {
+            OtherController.openWindow("Проверка теста", "CheckForm.fxml", "title.png", CheckTest);
+            Stage stage = (Stage) CheckTest.getScene().getWindow();
+            stage.close();
+        });
 
     }
 

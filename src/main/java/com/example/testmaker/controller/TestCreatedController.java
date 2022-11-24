@@ -12,10 +12,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import com.example.testmaker.data.TemporaryMemory;
 import com.example.testmaker.entety.Quest;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
@@ -49,7 +46,7 @@ public class TestCreatedController {
     private RadioButton One;
 
     @FXML
-    private TextField Quest;
+    private TextArea Quest;
 
     @FXML
     private RadioButton Three;
@@ -69,11 +66,7 @@ public class TestCreatedController {
         assert Quest != null : "fx:id=\"Quest\" was not injected: check your FXML file 'Untitled'.";
         assert Three != null : "fx:id=\"Three\" was not injected: check your FXML file 'Untitled'.";
         assert Two != null : "fx:id=\"Two\" was not injected: check your FXML file 'Untitled'.";
-        Quest.setText("");
-        AnswerOne.setText("");
-        AnswerTwo.setText("");
-        AnswerThree.setText("");
-        AnswerFour.setText("");
+        setNull();
         TemporaryMemory.countQuest = TemporaryMemory.test.getCountQuest();
         if (TemporaryMemory.countQuest - 1 == 0) {
             Next.setText("Перейти к просмотру");
@@ -94,9 +87,10 @@ public class TestCreatedController {
                                 AnswerThree.getText(),
                                 AnswerFour.getText()), getAnswerIndex()));
                 count++;
+                setNull();
             }
             if (TemporaryMemory.countQuest - 1 == 0 && TemporaryMemory.test.getCountQuest() > 1) {
-                Next.setText("Перейти к просмотру");
+                Next.setText("Перейти к сохранению");
                 OtherController.generateAlert("Остался один вопрос", Alert.AlertType.INFORMATION);
             }
             if (TemporaryMemory.countQuest == 0) {
@@ -108,7 +102,7 @@ public class TestCreatedController {
 
                 try {
                     TemporaryMemory.path = dir.get().getAbsolutePath();
-                    OtherController.read(TemporaryMemory.path);
+                    OtherController.readQuest();
 
                 } catch (IOException e) {
 
@@ -140,6 +134,7 @@ public class TestCreatedController {
         }
         return tmp;
     }
+
     private void configuringDirectoryChooser(DirectoryChooser directoryChooser) {
         // Set title for DirectoryChooser
         directoryChooser.setTitle("Select Some Directories");
@@ -148,4 +143,15 @@ public class TestCreatedController {
         directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
     }
 
+    private void setNull() {
+        One.setSelected(false);
+        Two.setSelected(false);
+        Three.setSelected(false);
+        Four.setSelected(false);
+        Quest.setText("");
+        AnswerOne.setText("");
+        AnswerTwo.setText("");
+        AnswerThree.setText("");
+        AnswerFour.setText("");
+    }
 }

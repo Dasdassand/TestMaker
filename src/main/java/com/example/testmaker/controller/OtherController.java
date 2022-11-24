@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -40,18 +41,34 @@ public class OtherController {
         stage.close();
     }
 
-    public static boolean read(String path) throws IOException {
-        File file = new File(path, TemporaryMemory.filename + ".txt");
-           if (!file.createNewFile()) {
-               generateAlert("Файл с таким именем существует - невозможно создать новый", Alert.AlertType.ERROR);
-               generateNameEditForm();
-               return false;
-           } else {
-               FileWriter fileWriter = new FileWriter(file);
-               fileWriter.write(generateText());
-               fileWriter.flush();
-               return true;
-           }
+    public static boolean readQuest() throws IOException {
+        File file = new File(TemporaryMemory.path, TemporaryMemory.filename + ".txt");
+        if (!file.createNewFile()) {
+            generateAlert("Файл с таким именем существует - невозможно создать новый", Alert.AlertType.ERROR);
+            generateNameEditForm();
+            return false;
+        } else {
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(generateTextQuest());
+            fileWriter.flush();
+            readAnswer();
+            fileWriter.close();
+            return true;
+        }
+
+    }
+
+    private static void readAnswer() throws IOException {
+        File file = new File(TemporaryMemory.path, TemporaryMemory.answerFilename + ".txt");
+        file.createNewFile();
+        try {
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(generateTextAnswer());
+            fileWriter.flush();
+            fileWriter.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -66,7 +83,16 @@ public class OtherController {
         stage.show();
     }
 
-    public static String generateText() {
+    public static String generateTextQuest() {
         return TemporaryMemory.test.toString();
+    }
+    public static String generateTextAnswer(){
+        return TemporaryMemory.test.answerToString();
+    }
+    public static File readFile(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enter file");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        return fileChooser.showOpenDialog(new Stage());
     }
 }

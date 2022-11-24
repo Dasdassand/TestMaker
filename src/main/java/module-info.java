@@ -3,6 +3,7 @@ module com.example.testmaker {
     requires javafx.fxml;
     requires static lombok;
     requires java.desktop;
+  //  requires hibernate.core;
 
 
     opens com.example.testmaker to javafx.fxml;

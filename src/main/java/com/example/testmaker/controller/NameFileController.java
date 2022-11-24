@@ -35,8 +35,9 @@ public class NameFileController {
                 OtherController.generateAlert("Введите данные", Alert.AlertType.WARNING);
             else {
                 TemporaryMemory.filename = NewName.getText();
+                TemporaryMemory.renameAnswerName();
                 try {
-                    if (OtherController.read(TemporaryMemory.path)){
+                    if (OtherController.readQuest()){
                         System.out.println("Done");
                     }
                 } catch (IOException e) {
