@@ -34,19 +34,19 @@ public class Test {
                 "Количество вопросов - " + countQuest + "\n" +
                 "Название дисциплины - " + subjectName + "\n" +
                 "Время на выполнение теста (в минутах) - " + time + "\n" +
-                "-" + "\n" +
-                quest + "Дата и время создания " + dateCreated;
+                quest + "-" + "\n" +
+                "Дата и время создания " + dateCreated;
     }
 
     public String answerToString() {
         String res = id.toString() + "\n";
         for (Quest q :
                 quests) {
-            res += "Номер вопроса - " + q.getNumber() + "\n";
             for (Integer i :
                     q.getIndexAnswers()) {
-                res += i + "\n";
+                res += i + " ";
             }
+            res+="\n";
         }
         return res;
     }
