@@ -1,12 +1,14 @@
 package com.example.testmaker.entety;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
-    private String name;
-    private String login;
+    private String id;
+    private String username;
     private String password;
-    private boolean isAdmin;
-    private Platoon platoon;
 }

@@ -5,18 +5,72 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="192.0" prefWidth="537.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.testmaker.controller.AdminController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="578.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.testmaker.controller.AdminController">
    <children>
-      <TextField fx:id="CountQuest" layoutX="14.0" layoutY="47.0" />
-      <Button fx:id="CreateButton" layoutX="14.0" layoutY="122.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="160.0" text="Создать тест" />
-      <Label layoutX="187.0" layoutY="52.0" text="Общее количество вопросов в тесте" />
-      <ComboBox fx:id="SubjectBox" layoutX="8.0" layoutY="8.0" prefHeight="26.0" prefWidth="357.0" />
-      <Label layoutX="380.0" layoutY="13.0" text="Взвод и дисицплина" />
-      <TextField fx:id="TimeCount" layoutX="14.0" layoutY="88.0" />
-      <Label layoutX="187.0" layoutY="93.0" text="Время на выполнение всего теста (минут)" />
-      <Button fx:id="EnterTest" layoutX="213.0" layoutY="122.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="160.0" text="Открыть тест" />
-      <Button fx:id="CheckTest" layoutX="14.0" layoutY="158.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="160.0" text="Проверить тест" />
-      <Button fx:id="OpenTest" layoutX="213.0" layoutY="158.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="160.0" text="Предоставить тест" />
+      <TextField fx:id="CountQuest" layoutX="14.0" layoutY="98.0">
+         <font>
+            <Font size="16.0" />
+         </font></TextField>
+      <Button fx:id="CreateButton" layoutX="25.0" layoutY="187.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="529.0" text="Создать тест">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
+      <Label layoutX="220.0" layoutY="102.0" text="Общее количество вопросов в тесте">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <ComboBox fx:id="SubjectBox" layoutX="9.0" layoutY="7.0" prefHeight="26.0" prefWidth="357.0" />
+      <Label layoutX="389.0" layoutY="12.0" text="Взвод и дисицплина">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <TextField fx:id="TimeCount" layoutX="14.0" layoutY="145.0">
+         <font>
+            <Font size="16.0" />
+         </font></TextField>
+      <Label layoutX="221.0" layoutY="149.0" text="Время на выполнение всего теста (минут)">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Button fx:id="EnterTest" layoutX="25.0" layoutY="281.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="529.0" text="Открыть тест">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
+      <Button fx:id="CheckTest" layoutX="27.0" layoutY="372.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="529.0" text="Проверить тест">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
+      <Button fx:id="OpenTest" layoutX="27.0" layoutY="457.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="529.0" text="Предоставить тест">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
+      <Line endX="468.0" layoutX="110.0" layoutY="89.0" startX="-110.0" />
+      <Text layoutX="191.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Поле создания тестов">
+         <font>
+            <Font name="System Italic" size="24.0" />
+         </font>
+      </Text>
+      <Line endX="468.0" layoutX="110.0" layoutY="262.0" startX="-110.0" />
+      <Text layoutX="171.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Поле просмотра теста">
+         <font>
+            <Font name="System Italic" size="24.0" />
+         </font>
+      </Text>
+      <Line endX="468.0" layoutX="112.0" layoutY="356.0" startX="-110.0" />
+      <Text layoutX="176.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Поле проверки теста">
+         <font>
+            <Font name="System Italic" size="24.0" />
+         </font>
+      </Text>
+      <Text layoutX="176.0" layoutY="436.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Поле отправки теста">
+         <font>
+            <Font name="System Italic" size="24.0" />
+         </font>
+      </Text>
+      <Line endX="468.0" layoutX="109.0" layoutY="442.0" startX="-110.0" />
    </children>
 </AnchorPane>

@@ -1,9 +1,15 @@
 package com.example.testmaker.controller;
 
+import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import com.example.testmaker.data.DataBaseAPI;
 import com.example.testmaker.data.TemporaryMemory;
 import com.example.testmaker.entety.Platoon;
 import javafx.fxml.FXML;
@@ -41,9 +47,10 @@ public class AdminController {
 
     @FXML
     private TextField TimeCount;
+    private ResultSet resultSet;
 
     @FXML
-    void initialize() {
+    void initialize() throws IOException, SQLException {
         assert CheckTest != null : "fx:id=\"CheckTest\" was not injected: check your FXML file 'Untitled'.";
         assert CountQuest != null : "fx:id=\"CountQuest\" was not injected: check your FXML file 'Untitled'.";
         assert CreateButton != null : "fx:id=\"CreateButton\" was not injected: check your FXML file 'Untitled'.";
@@ -51,8 +58,15 @@ public class AdminController {
         assert OpenTest != null : "fx:id=\"OpenTest\" was not injected: check your FXML file 'Untitled'.";
         assert SubjectBox != null : "fx:id=\"SubjectBox\" was not injected: check your FXML file 'Untitled'.";
         assert TimeCount != null : "fx:id=\"TimeCount\" was not injected: check your FXML file 'Untitled'.";
+        DataBaseAPI baseAPI = DataBaseAPI.getDataBase();
+        resultSet = baseAPI.getResultSet("Select p.number, s.name FROM subject as s, teacher as t, platoon as p" +
+                " WHERE s.teacher =" + TemporaryMemory.user.getId());
         SubjectBox.getItems().add("Не выбран");
-        SubjectBox.getItems().add("441");
+        for (String s:
+             makeName(resultSet)) {
+            SubjectBox.getItems().add(s);
+        }
+        resultSet.close();
         for (Platoon pl :
                 TemporaryMemory.platoons) {
             for (String s :
@@ -61,28 +75,28 @@ public class AdminController {
             }
         }
         SubjectBox.getSelectionModel().selectFirst();
-            CountQuest.setText("");
-            TimeCount.setText("");
-            CreateButton.setOnAction(actionEvent -> {
-                if (SubjectBox.getValue().equals("Не выбран"))
-                    OtherController.generateAlert("Взвод не выбран", Alert.AlertType.WARNING);
-                else if (CountQuest.getText().equals("") || TimeCount.getText().equals(""))
-                    OtherController.generateAlert("Введены не все значения", Alert.AlertType.WARNING);
-                else {
-                    TemporaryMemory.test.setCountQuest(Integer.parseInt(CountQuest.getText()));
-                    TemporaryMemory.test.setTime(Integer.parseInt(TimeCount.getText()));
-                    TemporaryMemory.test.setDateCreated(LocalDateTime.now());
-                    TemporaryMemory.test.setSubjectName(subjectName(SubjectBox.getValue()));
-                    OtherController.openWindow("Создание тестов", "TestCreated.fxml",
-                            "title.png", CreateButton);
-                }
+        CountQuest.setText("");
+        TimeCount.setText("");
+        CreateButton.setOnAction(actionEvent -> {
+            if (SubjectBox.getValue().equals("Не выбран"))
+                OtherController.generateAlert("Взвод не выбран", Alert.AlertType.WARNING);
+            else if (CountQuest.getText().equals("") || TimeCount.getText().equals(""))
+                OtherController.generateAlert("Введены не все значения", Alert.AlertType.WARNING);
+            else {
+                TemporaryMemory.test.setCountQuest(Integer.parseInt(CountQuest.getText()));
+                TemporaryMemory.test.setTime(Integer.parseInt(TimeCount.getText()));
+                TemporaryMemory.test.setDateCreated(LocalDateTime.now());
+                TemporaryMemory.test.setSubjectName(subjectName(SubjectBox.getValue()));
+                OtherController.openWindow("Создание тестов", "TestCreated.fxml",
+                        "title.png", CreateButton);
+            }
 
-            });
-            EnterTest.setOnAction(actionEvent -> {
-                OtherController.openWindow("Просмотр теста", "See.fxml", "title.png", EnterTest);
-                Stage stage = (Stage) EnterTest.getScene().getWindow();
-                stage.close();
-            });
+        });
+        EnterTest.setOnAction(actionEvent -> {
+            OtherController.openWindow("Просмотр теста", "See.fxml", "title.png", EnterTest);
+            Stage stage = (Stage) EnterTest.getScene().getWindow();
+            stage.close();
+        });
 
         CheckTest.setOnAction(actionEvent -> {
             OtherController.openWindow("Проверка теста", "CheckForm.fxml", "title.png", CheckTest);
@@ -92,23 +106,14 @@ public class AdminController {
 
     }
 
-    private Platoon searchPlatoon(String s) {
-        int tmp = Integer.parseInt(s.split(" ")[0]);
-        for (Platoon pl :
-                TemporaryMemory.platoons) {
-            if (pl.getNumber() == tmp)
-                return pl;
-        }
-        return null;
-    }
-
     private String subjectName(String s) {
-        String[] tmp = s.split(" ");
-        String res = "";
-        for (int i = 5; i < tmp.length; i++) {
-            res += tmp[i];
-        }
-        return res;
+        return  s.split(" - ")[1];
     }
 
+    private List<String> makeName(ResultSet set) throws SQLException {
+        List<String> resList = new ArrayList<>();
+        while (set.next())
+            resList.add(set.getString(1) + " - " + set.getString(2));
+        return resList;
+    }
 }
