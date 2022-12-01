@@ -11,7 +11,6 @@ import java.util.ResourceBundle;
 
 import com.example.testmaker.data.DataBaseAPI;
 import com.example.testmaker.data.TemporaryMemory;
-import com.example.testmaker.entety.Platoon;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -59,21 +58,16 @@ public class AdminController {
         assert SubjectBox != null : "fx:id=\"SubjectBox\" was not injected: check your FXML file 'Untitled'.";
         assert TimeCount != null : "fx:id=\"TimeCount\" was not injected: check your FXML file 'Untitled'.";
         DataBaseAPI baseAPI = DataBaseAPI.getDataBase();
-        resultSet = baseAPI.getResultSet("Select p.number, s.name FROM subject as s, teacher as t, platoon as p" +
+        resultSet = baseAPI.getResultSet("Select p.number, s.name, s.id, s.platoon FROM subject as s, teacher as t, platoon as p" +
                 " WHERE s.teacher =" + TemporaryMemory.user.getId());
         SubjectBox.getItems().add("Не выбран");
-        for (String s:
-             makeName(resultSet)) {
-            SubjectBox.getItems().add(s);
-        }
+        List<String> listPlSub = makeName(resultSet);
         resultSet.close();
-        for (Platoon pl :
-                TemporaryMemory.platoons) {
-            for (String s :
-                    pl.getSubjects()) {
-                SubjectBox.getItems().add(pl.getNumber() + " - взвод, " + "дисциплина - " + s);
-            }
+        for (String s :
+               listPlSub) {
+            SubjectBox.getItems().add(s.split("//")[0]);
         }
+
         SubjectBox.getSelectionModel().selectFirst();
         CountQuest.setText("");
         TimeCount.setText("");
@@ -85,8 +79,10 @@ public class AdminController {
             else {
                 TemporaryMemory.test.setCountQuest(Integer.parseInt(CountQuest.getText()));
                 TemporaryMemory.test.setTime(Integer.parseInt(TimeCount.getText()));
-                TemporaryMemory.test.setDateCreated(LocalDateTime.now());
-                TemporaryMemory.test.setSubjectName(subjectName(SubjectBox.getValue()));
+                TemporaryMemory.test.setDate(LocalDateTime.now());
+                TemporaryMemory.test.setIdSubject(subjectID(listPlSub.get(SubjectBox.getSelectionModel().getSelectedIndex() + 1)));
+                TemporaryMemory.test.setIdPlatoon(platoonID(listPlSub.get(SubjectBox.getSelectionModel().getSelectedIndex() + 1)));
+                TemporaryMemory.test.setIdTeacher(TemporaryMemory.user.getId());
                 OtherController.openWindow("Создание тестов", "TestCreated.fxml",
                         "title.png", CreateButton);
             }
@@ -106,14 +102,20 @@ public class AdminController {
 
     }
 
-    private String subjectName(String s) {
-        return  s.split(" - ")[1];
+    private String subjectID(String s) {
+        return s.split("//")[1].split(" ")[0];
     }
+
+    private String platoonID(String s) {
+        return s.split("//")[1].split(" ")[1];
+    }
+
 
     private List<String> makeName(ResultSet set) throws SQLException {
         List<String> resList = new ArrayList<>();
         while (set.next())
-            resList.add(set.getString(1) + " - " + set.getString(2));
+            resList.add(set.getString(1) + " - " + set.getString(2) +
+                    "//" + set.getString(3) + " " + set.getString(4));
         return resList;
     }
 }
