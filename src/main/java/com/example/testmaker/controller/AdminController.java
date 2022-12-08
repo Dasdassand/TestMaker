@@ -58,8 +58,9 @@ public class AdminController {
         assert SubjectBox != null : "fx:id=\"SubjectBox\" was not injected: check your FXML file 'Untitled'.";
         assert TimeCount != null : "fx:id=\"TimeCount\" was not injected: check your FXML file 'Untitled'.";
         DataBaseAPI baseAPI = DataBaseAPI.getDataBase();
-        resultSet = baseAPI.getResultSet("Select p.number, s.name, s.id, s.platoon FROM subject as s, teacher as t, platoon as p" +
-                " WHERE s.teacher =" + TemporaryMemory.user.getId());
+        resultSet = baseAPI.getResultSet("SELECT P.number, S.name, s.id, P.id FROM Subject" +
+                " as S JOIN Platoon P on P.id = S.platoon JOIN Teacher T on T.id =" +
+                " S.teacher WHERE T.id = " + TemporaryMemory.user.getId());
         SubjectBox.getItems().add("Не выбран");
         List<String> listPlSub = makeName(resultSet);
         resultSet.close();
@@ -113,6 +114,7 @@ public class AdminController {
 
     private List<String> makeName(ResultSet set) throws SQLException {
         List<String> resList = new ArrayList<>();
+        System.out.println(set.getFetchSize());
         while (set.next())
             resList.add(set.getString(1) + " - " + set.getString(2) +
                     "//" + set.getString(3) + " " + set.getString(4));
