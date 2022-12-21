@@ -3,6 +3,7 @@ package com.example.testmaker.controller;
 import com.example.testmaker.HelloApplication;
 import com.example.testmaker.data.TemporaryMemory;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -14,10 +15,15 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
+
+import static com.example.testmaker.data.TemporaryMemory.test;
+import static com.example.testmaker.data.TemporaryMemory.user;
 
 
 public class OtherController {
+
     public static void generateAlert(String alertMessage, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setContentText(alertMessage);
@@ -41,61 +47,11 @@ public class OtherController {
         stage.close();
     }
 
-    public static boolean readQuest(String filename) throws IOException {
-        if (!Objects.equals(filename, "")) {
-            File file = new File(TemporaryMemory.path, filename + ".txt");
-            if (!file.createNewFile()) {
-                generateAlert("Файл с таким именем существует - невозможно создать новый", Alert.AlertType.ERROR);
-                generateNameEditForm();
-                return false;
-            } else {
-                FileWriter fileWriter = new FileWriter(file);
-                fileWriter.write(generateTextQuest());
-                fileWriter.flush();
-                readAnswer(filename + "Answer");
-                fileWriter.close();
-                return true;
-            }
-        }else {
-            generateAlert("Файл с таким именем существует - невозможно создать новый", Alert.AlertType.ERROR);
-            generateNameEditForm();
-            return true;
-        }
+ /**
 
-    }
+*/
 
-    private static void readAnswer(String answerFilename) throws IOException {
-        File file = new File(TemporaryMemory.path, answerFilename + ".txt");
-        file.createNewFile();
-        try {
-            FileWriter fileWriter = new FileWriter(file);
-           // fileWriter.write(generateTextAnswer());
-            fileWriter.flush();
-            fileWriter.close();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
-    }
-
-    public static void generateNameEditForm() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(Objects.requireNonNull(HelloApplication.class.getResource("NameFileForm.fxml")));
-        Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = new Stage();
-        stage.setTitle("Создание нового имени");
-        stage.getIcons().add(new Image(Objects.requireNonNull(HelloApplication.class.getResourceAsStream("title.png"))));
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public static String generateTextQuest() {
-        return TemporaryMemory.test.toString();
-    }
-   // public static String generateTextAnswer(){
-        //return TemporaryMemory.test.answerToString();
-  //  }
-    public static File readFile(){
+    public static File readFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Enter file");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));

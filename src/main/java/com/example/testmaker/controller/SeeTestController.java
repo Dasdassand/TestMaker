@@ -1,7 +1,6 @@
 package com.example.testmaker.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
@@ -12,6 +11,8 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 import com.example.testmaker.data.DataBaseAPI;
+import com.example.testmaker.entety.Test;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -43,18 +44,11 @@ public class SeeTestController {
         comboBox.getItems().add("Ok");
         comboBox.getItems().addAll(getTests());
         comboBox.setOnAction(actionEvent -> {
-            StringBuilder res = new StringBuilder();
-            Scanner scanner = null;
             try {
-                scanner = new Scanner(new FileReader(new File(getTest(comboBox.getSelectionModel().getSelectedItem()))));
+                Text.setText(getTest(comboBox.getSelectionModel().getSelectedItem()).toString());
             } catch (IOException | SQLException e) {
                 throw new RuntimeException(e);
             }
-            while (scanner.hasNext()) {
-                res.append(scanner.nextLine()).append("\n");
-            }
-            Text.setText(res.toString());
-            scanner.close();
         });
 
         Exit.setOnAction(
@@ -67,24 +61,24 @@ public class SeeTestController {
 
     }
 
-    private String getTest(String value) throws IOException, SQLException {
+    private Test getTest(String value) throws IOException, SQLException {
         DataBaseAPI base = DataBaseAPI.getDataBase();
-        ResultSet set = base.getResultSet("Select path_to_test from test where test.id = " +
-                "'"+value.split("&")[1] +"'");
+        ResultSet set = base.getResultSet("Select test_json from test where test.id = " +
+                "'"+value +"'");
         String res= "";
         if (set.next())
             res =  set.getString(1);
         set.close();
         base.close();
-        return res;
+        return new ObjectMapper().readValue(res, Test.class);
     }
 
     private LinkedList<String> getTests() throws IOException, SQLException {
         DataBaseAPI base = DataBaseAPI.getDataBase();
-        ResultSet set = base.getResultSet("Select id, name from test");
+        ResultSet set = base.getResultSet("Select id from test");
         LinkedList<String> res = new LinkedList<>();
         while (set.next()) {
-            res.add(set.getString(2) + "&" + set.getString(1));
+            res.add(set.getString(1));
         }
         set.close();
         base.close();

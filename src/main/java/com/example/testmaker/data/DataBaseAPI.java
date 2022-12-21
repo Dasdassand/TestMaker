@@ -49,6 +49,11 @@ public class DataBaseAPI {
         return statement.executeQuery(query);
     }
 
+    public void addValue(String query) throws SQLException {
+        openSession();
+        statement.execute(query);
+    }
+
     public void close() throws SQLException {
         statement.close();
         connection.close();

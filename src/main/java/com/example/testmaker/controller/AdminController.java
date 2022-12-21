@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 
 import com.example.testmaker.data.DataBaseAPI;
 import com.example.testmaker.data.TemporaryMemory;
+import com.example.testmaker.server.ServerApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -50,6 +51,8 @@ public class AdminController {
 
     @FXML
     void initialize() throws IOException, SQLException {
+        TemporaryMemory.addLists();
+        TemporaryMemory.serverApp = new ServerApp();
         assert CheckTest != null : "fx:id=\"CheckTest\" was not injected: check your FXML file 'Untitled'.";
         assert CountQuest != null : "fx:id=\"CountQuest\" was not injected: check your FXML file 'Untitled'.";
         assert CreateButton != null : "fx:id=\"CreateButton\" was not injected: check your FXML file 'Untitled'.";
@@ -64,8 +67,9 @@ public class AdminController {
         SubjectBox.getItems().add("Не выбран");
         List<String> listPlSub = makeName(resultSet);
         resultSet.close();
+        baseAPI.close();
         for (String s :
-               listPlSub) {
+                listPlSub) {
             SubjectBox.getItems().add(s.split("//")[0]);
         }
 
@@ -81,8 +85,8 @@ public class AdminController {
                 TemporaryMemory.test.setCountQuest(Integer.parseInt(CountQuest.getText()));
                 TemporaryMemory.test.setTime(Integer.parseInt(TimeCount.getText()));
                 TemporaryMemory.test.setDate(LocalDateTime.now());
-                TemporaryMemory.test.setIdSubject(subjectID(listPlSub.get(SubjectBox.getSelectionModel().getSelectedIndex() + 1)));
-                TemporaryMemory.test.setIdPlatoon(platoonID(listPlSub.get(SubjectBox.getSelectionModel().getSelectedIndex() + 1)));
+                TemporaryMemory.test.setIdSubject(subjectID(listPlSub.get(SubjectBox.getSelectionModel().getSelectedIndex() - 1)));
+                TemporaryMemory.test.setIdPlatoon(platoonID(listPlSub.get(SubjectBox.getSelectionModel().getSelectedIndex() - 1)));
                 TemporaryMemory.test.setIdTeacher(TemporaryMemory.user.getId());
                 OtherController.openWindow("Создание тестов", "TestCreated.fxml",
                         "title.png", CreateButton);
@@ -94,13 +98,15 @@ public class AdminController {
             Stage stage = (Stage) EnterTest.getScene().getWindow();
             stage.close();
         });
-
+        //No form
         CheckTest.setOnAction(actionEvent -> {
-            OtherController.openWindow("Проверка теста", "CheckForm.fxml", "title.png", CheckTest);
+            OtherController.openWindow("Проверка теста", "ResultForm.fxml", "title.png", CheckTest);
             Stage stage = (Stage) CheckTest.getScene().getWindow();
             stage.close();
         });
-
+        OpenTest.setOnAction(actionEvent -> {
+            OtherController.openWindow("Предоставить тест", "OpenTest.fxml", "title.png", OpenTest);
+        });
     }
 
     private String subjectID(String s) {

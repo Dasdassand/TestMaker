@@ -8,8 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Security {
-    public static boolean checkData(User user) throws IOException, SQLException {
-        ResultSet resultSet = DataBaseAPI.getDataBase().getResultSet("Select username, password, id FROM Teacher");
+    public static boolean checkData(User user , String role) throws IOException, SQLException {
+        String s = "Select username, password, id FROM " + role;
+        ResultSet resultSet = DataBaseAPI.getDataBase().getResultSet(s);
         while (resultSet.next()){
             if (resultSet.getString(1).equals(user.getUsername()) && resultSet.getString(2).equals(
                     user.getPassword())){

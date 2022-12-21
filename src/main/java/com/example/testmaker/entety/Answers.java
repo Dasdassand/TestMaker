@@ -1,6 +1,5 @@
 package com.example.testmaker.entety;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,14 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Quest {
-    @JsonProperty("number")
-    private short number;
-    @JsonProperty("description")
-    private String description;
+public class Answers {
     @JsonProperty("answers")
-    private List<String> answers;
-    @JsonProperty("indexAnswers")
-    private List<Integer> indexAnswers;
-
+    private List<Integer> answers;
 }

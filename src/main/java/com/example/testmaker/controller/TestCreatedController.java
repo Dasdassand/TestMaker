@@ -3,14 +3,17 @@ package com.example.testmaker.controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicReference;
 
+import com.example.testmaker.data.DataBaseAPI;
 import com.example.testmaker.data.TemporaryMemory;
 import com.example.testmaker.entety.Quest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.DirectoryChooser;
@@ -94,21 +97,18 @@ public class TestCreatedController {
                 OtherController.generateAlert("Остался один вопрос", Alert.AlertType.INFORMATION);
             }
             if (TemporaryMemory.countQuest == 0) {
-                AtomicReference<File> dir = new AtomicReference<>();
-                DirectoryChooser directoryChooser = new DirectoryChooser();
-                configuringDirectoryChooser(directoryChooser);
-                dir.set(directoryChooser.showDialog(new Stage()));
-                System.out.println(dir.get().getAbsolutePath());
-                //  OtherController.generateTextAnswer();
+                ObjectMapper mapper = new ObjectMapper();
                 try {
-                    TemporaryMemory.path = dir.get().getAbsolutePath();
-                    OtherController.readQuest(TemporaryMemory.fileName);
-
-                } catch (IOException e) {
-
+                    TemporaryMemory.test.setDate(LocalDateTime.now());
+                    DataBaseAPI.getDataBase().addValue(
+                            "INSERT INTO Test(id, test_json, teacher, platoon, subject) VALUE" +
+                                    " (" + "'" + TemporaryMemory.test.getId() +"'"+" , " +"'"+  mapper.writeValueAsString(TemporaryMemory.test)+
+                                    "'" + ","+TemporaryMemory.test.getIdTeacher() + "," + TemporaryMemory.test.getIdPlatoon() + "," +
+                                    TemporaryMemory.test.getIdSubject() + ");");
+                } catch (SQLException | IOException e) {
                     throw new RuntimeException(e);
                 }
-
+                System.out.println("json created!");
                 Stage stage = (Stage) Next.getScene().getWindow();
                 stage.close();
                 System.out.println(TemporaryMemory.test.toString());
